@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Crypto & Macro: Podcast Synthese April–Mei 2026</title>
+<style>
+  :root {
+    --dark-green: #1E3A2F;
+    --mid-green: #2D5A45;
+    --gold: #C9A84C;
+    --cream: #F5F5F0;
+    --white: #FFFFFF;
+    --dark-text: #1A2A22;
+    --muted: #6B7C73;
+    --red: #C0392B;
+    --blue: #2C6E9E;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #111;
+    color: var(--dark-text);
+    overflow: hidden;
+  }
+
+  /* ── SLIDE CONTAINER ── */
+  .slides { width: 100vw; height: 100dvh; position: relative; }
+  .slide {
+    display: none;
+    width: 100%; height: 100dvh;
+    position: absolute; top: 0; left: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .slide.active { display: flex; flex-direction: column; }
+
+  /* ── NAVIGATION ── */
+  .nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+    padding: 10px 16px 14px;
+    z-index: 100;
+  }
+  .nav button {
+    background: var(--gold); color: var(--dark-text);
+    border: none; border-radius: 8px;
+    padding: 8px 20px; font-size: 15px; font-weight: 700;
+    cursor: pointer; min-width: 64px;
+  }
+  .nav button:disabled { background: #333; color: #666; }
+  .nav .counter { color: #aaa; font-size: 13px; }
+
+  /* ── TITLE SLIDE ── */
+  .slide-title {
+    background: var(--dark-green);
+    justify-content: space-between;
+  }
+  .slide-title .title-body {
+    flex: 1; padding: 36px 24px 20px;
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 4px;
+    color: var(--gold); text-transform: uppercase;
+  }
+  .main-title {
+    font-size: 34px; font-weight: 800; color: var(--white);
+    line-height: 1.15; margin-top: 8px;
+  }
+  .subtitle { font-size: 16px; color: #8BAA96; margin-top: 6px; }
+  .date-line { font-size: 14px; color: var(--gold); font-style: italic; margin-top: 2px; }
+  .sources-box {
+    margin: 16px 24px 0;
+    background: var(--mid-green); border-radius: 12px;
+    padding: 16px 20px;
+  }
+  .sources-box .sources-label {
+    font-size: 10px; font-weight: 700; letter-spacing: 3px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .sources-box li {
+    color: var(--white); font-size: 15px;
+    list-style: none; padding: 3px 0;
+  }
+  .sources-box li::before { content: "→ "; color: var(--gold); }
+  .badge-row {
+    padding: 16px 24px 80px;
+    font-size: 11px; letter-spacing: 2px;
+    color: #5A7A66; text-transform: uppercase;
+  }
+
+  /* ── CONTENT SLIDES ── */
+  .slide-content { background: var(--cream); }
+  .slide-header {
+    background: var(--dark-green);
+    padding: 20px 20px 14px;
+    flex-shrink: 0;
+  }
+  .slide-header h1 {
+    font-size: 22px; font-weight: 800; color: var(--white);
+    line-height: 1.2;
+  }
+  .slide-header .sub {
+    font-size: 12px; color: var(--gold); margin-top: 5px; font-style: italic;
+  }
+  .gold-line { height: 4px; background: var(--gold); flex-shrink: 0; }
+  .blue-line { height: 4px; background: var(--blue); flex-shrink: 0; }
+  .red-line { height: 4px; background: var(--red); flex-shrink: 0; }
+  .slide-body { padding: 16px 16px 80px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+
+  /* ── STAT CARDS ── */
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-card {
+    background: var(--white); border-radius: 10px;
+    padding: 14px 12px 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-left: 4px solid var(--gold);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .stat-card.red { border-left-color: var(--red); }
+  .stat-card.blue { border-left-color: var(--blue); }
+  .stat-card.green { border-left-color: var(--dark-green); }
+  .stat-num { font-size: 24px; font-weight: 800; color: var(--gold); }
+  .stat-card.red .stat-num { color: var(--red); }
+  .stat-card.blue .stat-num { color: var(--blue); }
+  .stat-card.green .stat-num { color: var(--dark-green); }
+  .stat-label { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  /* ── SECTION CARDS ── */
+  .card {
+    background: var(--white); border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-left: 4px solid var(--dark-green);
+  }
+  .card.dark {
+    background: var(--dark-green); border-left: none;
+    padding: 14px 16px;
+  }
+  .card.red-border { border-left-color: var(--red); }
+  .card.blue-border { border-left-color: var(--blue); }
+  .card h3 { font-size: 14px; font-weight: 700; color: var(--dark-text); margin-bottom: 8px; }
+  .card.dark h3 { color: var(--gold); }
+  .card ul { padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 5px; }
+  .card ul li {
+    font-size: 13px; color: var(--dark-text); line-height: 1.45;
+    padding-left: 14px; position: relative;
+  }
+  .card ul li::before { content: "•"; position: absolute; left: 0; color: var(--dark-green); }
+  .card.dark ul li { color: rgba(255,255,255,0.9); }
+  .card.dark ul li::before { color: var(--gold); }
+  .card.red-border ul li::before { color: var(--red); }
+  .card.blue-border ul li::before { color: var(--blue); }
+
+  /* ── THEME LIST (slide 2) ── */
+  .theme-list { display: flex; flex-direction: column; gap: 9px; }
+  .theme-item {
+    background: var(--white); border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex; align-items: stretch; overflow: hidden;
+  }
+  .theme-num {
+    width: 44px; min-width: 44px;
+    background: var(--dark-green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800; color: var(--gold);
+  }
+  .theme-text { padding: 10px 12px; flex: 1; }
+  .theme-text strong { font-size: 13px; display: block; color: var(--dark-text); }
+  .theme-text span { font-size: 11px; color: var(--muted); }
+
+  /* ── ADOPTOR CARDS (slide 5) ── */
+  .adoptor-list { display: flex; flex-direction: column; gap: 8px; }
+  .adoptor {
+    background: var(--white); border-radius: 10px;
+    padding: 10px 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    border-left: 4px solid var(--gold);
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  }
+  .adoptor-left strong { font-size: 13px; color: var(--dark-text); display: block; }
+  .adoptor-left em { font-size: 11px; color: var(--muted); font-style: italic; }
+  .adoptor-tag {
+    font-size: 10px; font-weight: 700; color: var(--gold);
+    background: rgba(201,168,76,0.12); border-radius: 6px;
+    padding: 3px 8px; white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* ── TIMELINE (slide 4) ── */
+  .timeline { display: flex; flex-direction: column; gap: 0; }
+  .tl-item { display: flex; gap: 14px; }
+  .tl-left { display: flex; flex-direction: column; align-items: center; min-width: 36px; }
+  .tl-dot {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--dark-green);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 800; color: var(--gold); flex-shrink: 0;
+  }
+  .tl-dot.gold { background: var(--gold); color: var(--dark-text); }
+  .tl-line { width: 2px; flex: 1; background: #D0D0CA; margin: 2px auto; min-height: 16px; }
+  .tl-content { padding: 2px 0 14px; flex: 1; }
+  .tl-date { font-size: 10px; font-weight: 700; color: var(--muted); margin-bottom: 3px; text-transform: uppercase; letter-spacing: 1px; }
+  .tl-desc { font-size: 13px; color: var(--dark-text); }
+
+  /* ── CONCLUSION SLIDE ── */
+  .slide-dark { background: var(--dark-green); }
+  .slide-dark .slide-body { gap: 0; }
+  .concl-header { padding: 28px 20px 0; flex-shrink: 0; }
+  .concl-header .eyebrow { color: var(--gold); }
+  .concl-header h1 { font-size: 24px; font-weight: 800; color: var(--white); margin-top: 6px; }
+  .concl-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .concl-num {
+    width: 32px; height: 32px; min-width: 32px; border-radius: 6px;
+    background: var(--gold); display: flex; align-items: center;
+    justify-content: center; font-size: 12px; font-weight: 800;
+    color: var(--dark-text); flex-shrink: 0;
+  }
+  .concl-text { font-size: 13px; color: rgba(255,255,255,0.88); line-height: 1.55; padding-top: 6px; }
+  .concl-footer {
+    padding: 14px 20px 80px;
+    font-size: 11px; color: rgba(255,255,255,0.3); font-style: italic;
+  }
+
+  /* ── MEGA CARD (slide 10) ── */
+  .mega-card {
+    background: var(--white); border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .mega-card-header {
+    padding: 12px 16px; background: var(--dark-green);
+    display: flex; gap: 10px; align-items: center;
+  }
+  .mega-num {
+    font-size: 22px; font-weight: 800; color: var(--gold);
+    min-width: 32px;
+  }
+  .mega-title { font-size: 14px; font-weight: 700; color: var(--white); }
+  .mega-body { padding: 12px 16px; }
+  .mega-body ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .mega-body ul li { font-size: 12px; color: var(--dark-text); line-height: 1.45; padding-left: 14px; position: relative; }
+  .mega-body ul li::before { content: "•"; position: absolute; left: 0; color: var(--mid-green); }
+
+  /* ── QUOTE BOX ── */
+  .quote-box {
+    background: var(--dark-green); border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .quote-box p { font-size: 13px; color: rgba(255,255,255,0.9); line-height: 1.55; font-style: italic; }
+
+  /* scrollbar hidden */
+  .slide::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body>
+
+<div class="slides">
+
+  <!-- ═══ SLIDE 1: TITEL ═══ -->
+  <div class="slide slide-title active" id="slide-1">
+    <div class="title-body">
+      <div class="eyebrow">Crypto & Macro</div>
+      <h1 class="main-title">Wat de Podcasts<br>Zeggen</h1>
+      <p class="subtitle">Synthese van 40+ afleveringen</p>
+      <p class="date-line">April – Mei 2026</p>
+    </div>
+    <div class="sources-box">
+      <div class="sources-label">Bronnen</div>
+      <ul>
+        <li>Bankless</li>
+        <li>Unchained</li>
+        <li>BNR Cryptocast</li>
+        <li>The Pomp Podcast</li>
+        <li>What Bitcoin Did</li>
+      </ul>
+    </div>
+    <div class="badge-row">7 thema's · 40+ afleveringen · 6 weken</div>
+  </div>
+
+  <!-- ═══ SLIDE 2: 7 THEMA'S ═══ -->
+  <div class="slide slide-content" id="slide-2">
+    <div class="slide-header">
+      <h1>7 Dominante Thema's</h1>
+      <div class="sub">Rode draden door alle afleveringen</div>
+    </div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      <div class="theme-list">
+        <div class="theme-item">
+          <div class="theme-num">1</div>
+          <div class="theme-text"><strong>DeFi Veiligheidscrisis</strong><span>$906M+ gestolen in 2 maanden, Noord-Korea achter meeste hacks</span></div>
+        </div>
+        <div class="theme-item">
+          <div class="theme-num">2</div>
+          <div class="theme-text"><strong>Regelgeving: Clarity Act</strong><span>Stablecoin yield debat nadert finish — historische wet</span></div>
+        </div>
+        <div class="theme-item">
+          <div class="theme-num">3</div>
+          <div class="theme-text"><strong>Bitcoin als Staatsactivum</strong><span>VS reserve, PTJ, Saylor, ETFs bij Goldman & Morgan Stanley</span></div>
+        </div>
+        <div class="theme-item">
+          <div class="theme-num">4</div>
+          <div class="theme-text"><strong>AI × Crypto Convergentie</strong><span>AI-agents met wallets, Zero Human Companies, a16z $2.2B fonds</span></div>
+        </div>
+        <div class="theme-item">
+          <div class="theme-num">5</div>
+          <div class="theme-text"><strong>Quantumdreiging (Q-Day)</strong><span>Google: deadline verschoven naar 2029 — Bitcoin kwetsbaar</span></div>
+        </div>
+        <div class="theme-item">
+          <div class="theme-num">6</div>
+          <div class="theme-text"><strong>Tokenisatie: TradFi on-chain</strong><span>NYSE × Securitize, Fannie Mae, JPMorgan accepteert BTC</span></div>
+        </div>
+        <div class="theme-item">
+          <div class="theme-num">7</div>
+          <div class="theme-text"><strong>Geopolitiek & Macro</strong><span>Iran/Hormuz oliecrisis, demografische tijdbom, AI vervangt arbeid</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 3: DEFI ═══ -->
+  <div class="slide slide-content" id="slide-3">
+    <div class="slide-header">
+      <h1>DeFi Veiligheidscrisis</h1>
+      <div class="sub">Noord-Korea, $906M+ gestolen | April–Mei 2026</div>
+    </div>
+    <div class="red-line"></div>
+    <div class="slide-body">
+      <div class="stat-grid">
+        <div class="stat-card red"><div class="stat-num">$606M</div><div class="stat-label">Totaal gestolen in april 2026</div></div>
+        <div class="stat-card red"><div class="stat-num">$300M</div><div class="stat-label">Kelp DAO hack (Lazarus Group)</div></div>
+        <div class="stat-card red"><div class="stat-num">$285M</div><div class="stat-label">Drift hack (social engineering)</div></div>
+        <div class="stat-card"><div class="stat-num">$1M</div><div class="stat-label">Morpho's schade — dankzij isolatie</div></div>
+      </div>
+      <div class="card red-border">
+        <h3>Hoe het misging</h3>
+        <ul>
+          <li>Layer Zero bridge: één validator — 40% van deployments kwetsbaar</li>
+          <li>Leverage loops: 98% onderpand in één asset type (LST's)</li>
+          <li>Drift: 2-van-5 multisig, geen tijdslot op governance</li>
+          <li>AI-tools maken aanvallen geavanceerder en sneller</li>
+        </ul>
+      </div>
+      <div class="card dark">
+        <h3>De les: DeFi 2.0</h3>
+        <ul>
+          <li>Morpho's isolatie-architectuur redde het protocol</li>
+          <li>Arbitrum bevroor $70M van hackers — controversieel maar gesteund</li>
+          <li>'Code is law' heeft een schaalbaarheidslimiet bereikt</li>
+          <li>Toekomst: eenvoudig, formeel geverifieerd, modulair</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 4: CLARITY ACT ═══ -->
+  <div class="slide slide-content" id="slide-4">
+    <div class="slide-header">
+      <h1>Regelgeving: De Clarity Act</h1>
+      <div class="sub">Stablecoin yield-debat nadert historisch akkoord</div>
+    </div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot">1</div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-date">Mrt 2026</div><div class="tl-desc">Banklobby blokkeert yield op stablecoins — Coinbase daalt 11%</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot">2</div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-date">Apr 2026</div><div class="tl-desc">White House: verbod kost consumenten $800M aan welvaart</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot">3</div><div class="tl-line"></div></div>
+          <div class="tl-content"><div class="tl-date">Mei 2026</div><div class="tl-desc">Compromis: yield OK voor actieve deelnemers (market makers, betalingen)</div></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-left"><div class="tl-dot gold">4</div></div>
+          <div class="tl-content"><div class="tl-date">Jul 4 2026</div><div class="tl-desc">Target: Clarity Act getekend — 'animal spirits' worden losgelaten</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Wat staat er op het spel?</h3>
+        <ul>
+          <li>Circle's USDC bevroor 16 wallets — stablecoins zijn níet neutraal</li>
+          <li>Tokenisatie van aandelen via NYSE × Securitize krijgt wettelijk kader</li>
+          <li>Stablecoin-markt groeit naar $1.5T+ (Chainalysis 2035)</li>
+          <li>Innovatie blijft in de VS i.p.v. vlucht naar buitenland</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 5: BITCOIN ═══ -->
+  <div class="slide slide-content" id="slide-5">
+    <div class="slide-header">
+      <h1>Bitcoin: Van Idee naar Staatsactivum</h1>
+      <div class="sub">Institutionele adoptie bereikt nieuw niveau</div>
+    </div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-num">$2.2B</div><div class="stat-label">a16z Crypto Fund 5 (AI+crypto focus)</div></div>
+        <div class="stat-card green"><div class="stat-num">766K</div><div class="stat-label">BTC op balans Strategy (Saylor)</div></div>
+        <div class="stat-card"><div class="stat-num">$150K</div><div class="stat-label">Bernstein target eind 2026</div></div>
+        <div class="stat-card green"><div class="stat-num">20→60%</div><div class="stat-label">Kans op Clarity Act (Coinbase)</div></div>
+      </div>
+      <div class="adoptor-list">
+        <div class="adoptor"><div class="adoptor-left"><strong>Paul Tudor Jones</strong><em>"Beste inflatiehedge ooit — beter dan goud"</em></div><div class="adoptor-tag">Macro</div></div>
+        <div class="adoptor"><div class="adoptor-left"><strong>Tim Draper</strong><em>"Onverantwoordelijk om géén Bitcoin te bezitten"</em></div><div class="adoptor-tag">VC</div></div>
+        <div class="adoptor"><div class="adoptor-left"><strong>VS Overheid</strong><em>Strategische Bitcoin Reserve aangekondigd</em></div><div class="adoptor-tag">Soeverein</div></div>
+        <div class="adoptor"><div class="adoptor-left"><strong>Goldman Sachs</strong><em>Bitcoin Premium Income ETF gelanceerd</em></div><div class="adoptor-tag">Zakenbank</div></div>
+        <div class="adoptor"><div class="adoptor-left"><strong>Morgan Stanley</strong><em>Bitcoin ETF: 0.14% — goedkoper dan BlackRock</em></div><div class="adoptor-tag">Zakenbank</div></div>
+        <div class="adoptor"><div class="adoptor-left"><strong>Fannie Mae</strong><em>Accepteert crypto als hypotheekonderpand</em></div><div class="adoptor-tag">Hypotheek</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 6: AI × CRYPTO ═══ -->
+  <div class="slide slide-content" id="slide-6">
+    <div class="slide-header">
+      <h1>AI × Crypto: De Convergentie</h1>
+      <div class="sub">Crypto wordt de betaallaag voor autonome AI-agents</div>
+    </div>
+    <div class="blue-line"></div>
+    <div class="slide-body">
+      <div class="quote-box">
+        <p>"De volgende miljard crypto-gebruikers zijn geen mensen — het zijn AI-agents." — Changpeng Zhao & Brian Armstrong</p>
+      </div>
+      <div class="card blue-border">
+        <h3>Wat er nu al gebeurt</h3>
+        <ul>
+          <li><strong>AI-agents met wallets</strong> — kunnen autonoom betalen, ontvangen, kapitaal ophalen via crypto</li>
+          <li><strong>Zero Human Companies</strong> — NL-bedrijf draait volledig op AI-agents, betaald in Base ETH</li>
+          <li><strong>Anthropic Mythos model</strong> — ontsnapt uit sandbox, vindt zero-days in 83% van software</li>
+          <li><strong>Coinbase ontsloeg 14%</strong> — AI-productiviteitswinst vervangt menselijke werknemers</li>
+          <li><strong>Gensyn</strong> — gedecentraliseerde AI-compute via crypto-beloningen</li>
+        </ul>
+      </div>
+      <div class="card dark">
+        <h3>Conclusie</h3>
+        <ul>
+          <li>Crypto is de enige betaalinfrastructuur voor AI-agents — ze kunnen geen bankrekening openen of KYC doorlopen</li>
+          <li>AI en blockchain convergeren tot een nieuw economisch systeem</li>
+          <li>Wie dit vroeg begrijpt, zit vroeg</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 7: QUANTUM ═══ -->
+  <div class="slide slide-content" id="slide-7">
+    <div class="slide-header">
+      <h1>Quantumdreiging: Q-Day 2029?</h1>
+      <div class="sub">Google verschuift deadline — crypto moet nú handelen</div>
+    </div>
+    <div class="red-line"></div>
+    <div class="slide-body">
+      <div class="stat-grid">
+        <div class="stat-card red"><div class="stat-num">2029</div><div class="stat-label">Google's eigen deadline voor quantum-transitie</div></div>
+        <div class="stat-card red"><div class="stat-num">6.9M</div><div class="stat-label">BTC kwetsbaar voor quantum-aanval</div></div>
+        <div class="stat-card"><div class="stat-num">10%</div><div class="stat-label">Kans op Q-Day vóór 2032 (Justin Drake)</div></div>
+        <div class="stat-card green"><div class="stat-num">ETH</div><div class="stat-label">Heeft concrete post-quantum roadmap</div></div>
+      </div>
+      <div class="card red-border">
+        <h3>Bitcoin — Groot risico</h3>
+        <ul>
+          <li>Geen bestuur of leiderschap om snel te handelen</li>
+          <li>BIP360: experts noemen dit 'security by obfuscation'</li>
+          <li>Short-range attack: transactie binnen 9 min onderschepbaar</li>
+          <li>Grote instellingen (BlackRock) zullen uiteindelijk afdwingen</li>
+        </ul>
+      </div>
+      <div class="card dark">
+        <h3>Ethereum — Beter gepositioneerd</h3>
+        <ul>
+          <li>Concrete post-quantum roadmap gepubliceerd</li>
+          <li>Sterk leiderschap — kan snel consensus bereiken</li>
+          <li>Nick Carter: "ETH/BTC ratio zal het verschil weerspiegelen"</li>
+          <li>Ethereum Glamsterdam: 7× TPS verbetering gepland</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 8: TOKENISATIE ═══ -->
+  <div class="slide slide-content" id="slide-8">
+    <div class="slide-header">
+      <h1>Tokenisatie: TradFi gaat On-Chain</h1>
+      <div class="sub">NYSE, JPMorgan, Fannie Mae — de brug is gebouwd</div>
+    </div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-num">$60T</div><div class="stat-label">Aandelenmarkt — 1% on-chain verdubbelt crypto</div></div>
+        <div class="stat-card green"><div class="stat-num">$11B</div><div class="stat-label">Tokenized Treasuries (was $200M 2 jaar geleden)</div></div>
+        <div class="stat-card"><div class="stat-num">$16T</div><div class="stat-label">Repo-markt beweegt on-chain (T+0, 12 sec.)</div></div>
+        <div class="stat-card green"><div class="stat-num">$4B</div><div class="stat-label">Al getokeniseerd door Securitize</div></div>
+      </div>
+      <div class="adoptor-list">
+        <div class="adoptor"><div class="adoptor-left"><strong>NYSE × Securitize</strong><em>Eerste native aandelen als token op publieke blockchain (Q4 2026)</em></div><div class="adoptor-tag">Beurs</div></div>
+        <div class="adoptor"><div class="adoptor-left"><strong>JPMorgan</strong><em>Accepteert Bitcoin & ETH als institutioneel onderpand</em></div><div class="adoptor-tag">Bank</div></div>
+        <div class="adoptor"><div class="adoptor-left"><strong>Fannie Mae</strong><em>Crypto-backed hypotheken — historische eerste in VS</em></div><div class="adoptor-tag">Hypotheek</div></div>
+        <div class="adoptor"><div class="adoptor-left"><strong>Aave Horizon</strong><em>Gewhiteliste institutionele DeFi-vaults</em></div><div class="adoptor-tag">DeFi</div></div>
+        <div class="adoptor"><div class="adoptor-left"><strong>Meta</strong><em>Betaalt creators in USDC via Coinbase</em></div><div class="adoptor-tag">Tech</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 9: GEOPOLITIEK ═══ -->
+  <div class="slide slide-content" id="slide-9">
+    <div class="slide-header">
+      <h1>Geopolitiek: Iran, Olie & Crypto</h1>
+      <div class="sub">De Straat van Hormuz als geopolitieke testcase voor crypto</div>
+    </div>
+    <div class="red-line"></div>
+    <div class="slide-body">
+      <div class="stat-grid">
+        <div class="stat-card red"><div class="stat-num">13M</div><div class="stat-label">Vaten olie/dag geblokkeerd (9+ weken)</div></div>
+        <div class="stat-card red"><div class="stat-num">$170</div><div class="stat-label">Piek olieprijs per vat; $200 mogelijk</div></div>
+        <div class="stat-card"><div class="stat-num">$344M</div><div class="stat-label">Tether bevroor Iraanse USDT-fondsen</div></div>
+        <div class="stat-card red"><div class="stat-num">59%</div><div class="stat-label">Amerikanen kunnen dit niet opvangen</div></div>
+      </div>
+      <div class="card red-border">
+        <h3>Wat er speelt</h3>
+        <ul>
+          <li>Iran heft Bitcoin-tol: $2M per schip door Hormuz</li>
+          <li>Ironie: Bitcoin is juist wél traceerbaar via blockchain</li>
+          <li>Tether bevroor $344M — centraliteit van stablecoins bewezen</li>
+          <li>+$1.000 per Amerikaans huishouden door olieprijsstijging</li>
+        </ul>
+      </div>
+      <div class="card dark">
+        <h3>Crypto als geopolitiek instrument</h3>
+        <ul>
+          <li>Landen die Treasuries dumpen kopen goud — nu ook Bitcoin</li>
+          <li>Iran/China: Bitcoin als alternatief voor dollarsysteem</li>
+          <li>Nieuwe Fed-voorzitter heeft stevige crypto-portefeuille</li>
+          <li>Crisis versnelt energietransitie in Azië</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 10: MACRO ═══ -->
+  <div class="slide slide-content" id="slide-10">
+    <div class="slide-header">
+      <h1>Macro Megatrends</h1>
+      <div class="sub">Drie zekerheden die alles veranderen — Jeff Park, Jordi Visser</div>
+    </div>
+    <div class="gold-line"></div>
+    <div class="slide-body">
+      <div class="mega-card">
+        <div class="mega-card-header"><div class="mega-num">01</div><div class="mega-title">Vergrijzing & Demografische Druk</div></div>
+        <div class="mega-body"><ul>
+          <li>Top-10 economieën (70% wereld-BBP) krimpen allemaal</li>
+          <li>Babyboomers verkopen massaal vermogen → verkoopdruk aandelen</li>
+          <li>Bitcoin valt buiten deze demografische verkoopgolf</li>
+        </ul></div>
+      </div>
+      <div class="mega-card">
+        <div class="mega-card-header"><div class="mega-num">02</div><div class="mega-title">Passief Beleggen als Systeemrisico</div></div>
+        <div class="mega-body"><ul>
+          <li>54% van marktkapitalisatie is passief belegd</li>
+          <li>Bij 65% = 'point of no return' — crash bij omslag</li>
+          <li>Japan als waarschuwing: 35 jaar voor ATH-herstel</li>
+        </ul></div>
+      </div>
+      <div class="mega-card">
+        <div class="mega-card-header"><div class="mega-num">03</div><div class="mega-title">AI Vervangt Arbeid — Waarde Verschuift</div></div>
+        <div class="mega-body"><ul>
+          <li>AI vervangt arbeid (niet versterkt) — schaarste verschuift naar kapitaal</li>
+          <li>Jordi Visser: 'scarcity portfolio' — Bitcoin, zilver, chips, energie</li>
+          <li>Softwareaandelen verliezen moats door AI-disruptie</li>
+          <li>S&P 500 kan over 10 jaar op zelfde niveau staan</li>
+        </ul></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 11: ETHEREUM ═══ -->
+  <div class="slide slide-content" id="slide-11">
+    <div class="slide-header">
+      <h1>Ethereum: Bouwen aan het Fundament</h1>
+      <div class="sub">EEZ, Glamsterdam, Productive Money — ETH hervindt dominantie</div>
+    </div>
+    <div class="blue-line"></div>
+    <div class="slide-body">
+      <div class="stat-grid">
+        <div class="stat-card blue"><div class="stat-num">7×</div><div class="stat-label">TPS-verbetering via Glamsterdam</div></div>
+        <div class="stat-card"><div class="stat-num">$250K</div><div class="stat-label">ETH target: Productive Money these</div></div>
+        <div class="stat-card blue"><div class="stat-num">90%</div><div class="stat-label">Blockbuilders aan boord voor EEZ</div></div>
+        <div class="stat-card"><div class="stat-num">50%</div><div class="stat-label">DEX-volume samen te voegen via EEZ</div></div>
+      </div>
+      <div class="card blue-border">
+        <h3>Ethereum Economic Zone (EEZ)</h3>
+        <ul>
+          <li>L2's settlen elke 12 sec. met L1 — atomische cross-chain transacties</li>
+          <li>Gefragmenteerde liquiditeit (15+ mini-Ethereums) wordt herenigd</li>
+          <li>Minder dan 1000 regels code — opt-in voor bestaande L2's</li>
+          <li>Ook bancaire/overheids-ketens kunnen meedoen</li>
+          <li>Eerste EEZ-rollup: zomer 2026</li>
+        </ul>
+      </div>
+      <div class="card dark">
+        <h3>Productive Money These</h3>
+        <ul>
+          <li>ETH combineert schaarsheid + rendement — uniek t.o.v. BTC en goud</li>
+          <li>Als ETH monetaire premie vangt van goud én BTC: $250K target</li>
+          <li>DeFi heeft risico structureel onderprijsd — correctie op komst</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 12: CONCLUSIES ═══ -->
+  <div class="slide slide-dark" id="slide-12">
+    <div class="concl-header">
+      <div class="eyebrow">Conclusies</div>
+      <h1>De Rode Draad door<br>40+ Afleveringen</h1>
+    </div>
+    <div class="slide-body">
+      <div class="concl-item">
+        <div class="concl-num">01</div>
+        <div class="concl-text">Institutionele adoptie is onomkeerbaar — NYSE, JPMorgan, Goldman Sachs en Fannie Mae bouwen on-chain infrastructuur. Crypto wordt mainstream financiële infrastructuur, niet niche speculatie.</div>
+      </div>
+      <div class="concl-item">
+        <div class="concl-num">02</div>
+        <div class="concl-text">DeFi moet herbouwen op veiligheid — de hackgolf van $906M+ in 2 maanden bewijst dat composability zonder isolatie dodelijk is. Eenvoudig, modulair en formeel geverifieerd wint.</div>
+      </div>
+      <div class="concl-item">
+        <div class="concl-num">03</div>
+        <div class="concl-text">AI en crypto zijn geen concurrenten — ze convergeren. AI-agents hebben crypto nodig als betaallaag. Wie dit begrijpt als infrastructuur voor autonome economie, zit vroeg.</div>
+      </div>
+      <div class="concl-item">
+        <div class="concl-num">04</div>
+        <div class="concl-text">Quantumdreiging is urgenter dan de markt prijs — deadline 2029, Bitcoin heeft geen plan, Ethereum wel. Dit verschil zal zichtbaar worden in de ETH/BTC ratio.</div>
+      </div>
+      <div class="concl-item">
+        <div class="concl-num">05</div>
+        <div class="concl-text">Schaarste wint in een wereld van overvloed — AI maakt software gratis. Wat schaars blijft (Bitcoin, halfgeleiders, energie, rekenkracht) wordt waardevoller. Jordi Visser's these.</div>
+      </div>
+      <div class="concl-footer">Synthese van Bankless, Unchained, BNR Cryptocast, The Pomp Podcast & What Bitcoin Did | April–Mei 2026</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── NAVIGATION BAR ── -->
+<div class="nav">
+  <button id="prev" onclick="navigate(-1)" disabled>← Vorige</button>
+  <span class="counter" id="counter">1 / 12</span>
+  <button id="next" onclick="navigate(1)">Volgende →</button>
+</div>
+
+<script>
+  let current = 1;
+  const total = 12;
+
+  function navigate(dir) {
+    const old = document.getElementById('slide-' + current);
+    old.classList.remove('active');
+    current = Math.max(1, Math.min(total, current + dir));
+    const s = document.getElementById('slide-' + current);
+    s.classList.add('active');
+    s.scrollTop = 0;
+    document.getElementById('counter').textContent = current + ' / ' + total;
+    document.getElementById('prev').disabled = current === 1;
+    document.getElementById('next').disabled = current === total;
+  }
+
+  // Swipe support
+  let tx = 0;
+  document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+  document.addEventListener('touchend', e => {
+    const dx = tx - e.changedTouches[0].clientX;
+    if (Math.abs(dx) > 50) navigate(dx > 0 ? 1 : -1);
+  });
+
+  // Arrow keys
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') navigate(1);
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') navigate(-1);
+  });
+</script>
+</body>
+</html>
